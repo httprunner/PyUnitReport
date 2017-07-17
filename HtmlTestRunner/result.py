@@ -340,7 +340,10 @@ class _HtmlTestResult(_TextTestResult):
         if not os.path.exists(report_save_dir):
             os.makedirs(report_save_dir)
 
-        report_file_name = "{}.html".format(time.strftime("%Y-%m-%d-%H-%M-%S"))
+        if testRunner.report_name:
+            report_file_name = "{}.html".format(testRunner.report_name)
+        else:
+            report_file_name = "{}.html".format(time.strftime("%Y-%m-%d-%H-%M-%S"))
         report_file_fullpath = os.path.join(report_save_dir, report_file_name)
 
         report_content = self._render_html_report(testRunner, all_tests)

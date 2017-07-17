@@ -10,11 +10,12 @@ UTF8 = "UTF-8"
 class HTMLTestRunner(TextTestRunner):
     """" A test runner class that output the results. """
 
-    def __init__(self, output, verbosity=2, stream=sys.stderr,
+    def __init__(self, output, report_name=None, verbosity=2, stream=sys.stderr,
                  descriptions=True, failfast=False, buffer=False,
                  report_title=None, template=None, resultclass=None):
         self.verbosity = verbosity
         self.output = output
+        self.report_name = report_name
         self.encoding = UTF8
 
         TextTestRunner.__init__(self, stream, descriptions, verbosity,
