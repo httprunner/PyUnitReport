@@ -2,14 +2,14 @@ import os
 import sys
 import time
 import traceback
-from unittest import TestResult, _TextTestResult
+from datetime import datetime
+from unittest import TestResult, TextTestResult
 from unittest.result import failfast
 
 from jinja2 import Template
 
-
-DEFAULT_TEMPLATE = os.path.join(os.path.dirname(__file__), "template",
-                                "report_template.html")
+DEFAULT_TEMPLATE = os.path.join(
+    os.path.dirname(__file__), "template", "report_template.html")
 
 
 def load_template(template):
@@ -95,46 +95,49 @@ class _TestInfo(object):
         return self.test_exception_info
 
 
-class _HtmlTestResult(_TextTestResult):
-    """ A test result class that express test results in Html. """
+class HtmlTestResult(TextTestResult):
+    """ A test runner class that displays results in Html form. """
 
-    def __init__(self, stream, descriptions, verbosity, elapsed_times):
-        _TextTestResult.__init__(self, stream, descriptions, verbosity)
+    def __init__(self, stream, descriptions, verbosity):
+        super(HtmlTestResult, self).__init__(stream, descriptions, verbosity)
         self.buffer = True
         self._stdout_data = None
         self._stderr_data = None
         self.successes = []
         self.callback = None
-        self.elapsed_times = elapsed_times
         self.infoclass = _TestInfo
 
-    def _prepare_callback(self, test_info, target_list, verbose_str,
-                          short_str):
+    def _prepare_callback(self, test_info, target_list, verbose_str, short_str):
         """ Appends a 'info class' to the given target list and sets a
-            callback method to be called by stopTest method."""
+            callback method to be called by stopTest method. """
         target_list.append(test_info)
 
         def callback():
             """ Print test method outcome to the stream and ellapse time too."""
             test_info.test_finished()
 
-            if not self.elapsed_times:
-                self.start_time = self.stop_time = 0
-
             if self.showAll:
                 self.stream.writeln(
                     "{} ({:3f})s".format(verbose_str, test_info.elapsed_time))
             elif self.dots:
                 self.stream.write(short_str)
+
         self.callback = callback
 
     def getDescription(self, test):
-        """ Return the test descriotion if not have test name. """
+        """ Return the test description if not have test name. """
         doc_first_line = test.shortDescription()
         if self.descriptions and doc_first_line:
             return doc_first_line
         else:
             return str(test)
+
+    def startTest(self, test):
+        super(TextTestResult, self).startTest(test)
+        if self.showAll:
+            self.stream.write(self.getDescription(test))
+            self.stream.write(" ... ")
+            self.stream.flush()
 
     def startTest(self, test):
         """ Called before execute each method. """
@@ -155,7 +158,7 @@ class _HtmlTestResult(_TextTestResult):
     def stopTest(self, test):
         """ Called after excute each test method. """
         self._save_output_data()
-        _TextTestResult.stopTest(self, test)
+        TextTestResult.stopTest(self, test)
         self.stop_time = time.time()
 
         if self.callback and callable(self.callback):
@@ -174,8 +177,8 @@ class _HtmlTestResult(_TextTestResult):
         self._save_output_data()
         testinfo = self.infoclass(
             self, test, self.infoclass.FAILURE, err)
-        self.failures.append((testinfo,
-                             self._exc_info_to_string(err, test)))
+        self.failures.append(
+            (testinfo, self._exc_info_to_string(err, test)))
         self._prepare_callback(testinfo, [], "FAIL", "F")
 
     @failfast
@@ -239,7 +242,7 @@ class _HtmlTestResult(_TextTestResult):
 
         return tests_by_testcase
 
-    def _get_report_attributes(self, tests, start_time, elapsed_time):
+    def _get_report_attributes(self, tests, start_time, time_taken):
         """ Setup the header info for the report. """
 
         failures = errors = skips = success = 0
@@ -265,9 +268,10 @@ class _HtmlTestResult(_TextTestResult):
             status.append('Skip: {}'.format(skips))
         result = ', '.join(status)
 
+        start_time = datetime.fromtimestamp(start_time).strftime('%Y-%m-%d %H:%M:%S')
         hearders = {
-            "start_time": str(start_time)[:19],
-            "duration": str(elapsed_time)[:7],
+            "start_time": start_time,
+            "duration": time_taken,
             "status": result
         }
         total_runned_test = success + skips + errors + failures
@@ -312,10 +316,10 @@ class _HtmlTestResult(_TextTestResult):
 
     def _render_html_report(self, testRunner, tests):
         """ Render html report with test result. """
-        start_time = testRunner.start_time
-        elapsed_time = testRunner.time_taken
+        startTime = testRunner.startTime
+        timeTaken = testRunner.timeTaken
 
-        report_headers, total_test = self._get_report_attributes(tests, start_time, elapsed_time)
+        report_headers, total_test = self._get_report_attributes(tests, startTime, timeTaken)
         test_cases_list = []
 
         # Sort test by number if they have

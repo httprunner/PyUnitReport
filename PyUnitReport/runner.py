@@ -1,8 +1,8 @@
 import sys
-from datetime import datetime
-
+import time
 from unittest import TextTestRunner
-from .result import _HtmlTestResult
+
+from .result import HtmlTestResult
 
 UTF8 = "UTF-8"
 
@@ -21,9 +21,8 @@ class HTMLTestRunner(TextTestRunner):
         TextTestRunner.__init__(self, stream, descriptions, verbosity,
                                 failfast=failfast, buffer=buffer)
 
-        self.elapsed_times = True
         if resultclass is None:
-            self.resultclass = _HtmlTestResult
+            self.resultclass = HtmlTestResult
         else:
             self.resultclass = resultclass
 
@@ -33,69 +32,75 @@ class HTMLTestRunner(TextTestRunner):
     def _make_result(self):
         """ Create a TestResult object which will be used to store
         information about the executed tests. """
-        return self.resultclass(self.stream, self.descriptions, self.verbosity,
-                                self.elapsed_times)
+        return self.resultclass(self.stream, self.descriptions, self.verbosity)
 
     def run(self, test):
         """ Runs the given testcase or testsuite. """
+        result = self._make_result()
+        result.failfast = self.failfast
+        result.buffer = self.buffer
+        result.tb_locals = self.tb_locals
+
+        self.stream.writeln()
+        self.stream.writeln("Running tests... ")
+        self.stream.writeln(result.separator2)
+
+        self.startTime = time.time()
+        if getattr(result, 'startTestRun', None):
+            result.startTestRun()
+
         try:
-
-            result = self._make_result()
-            result.failfast = self.failfast
-            if hasattr(test, 'properties'):
-                # junit testsuite properties
-                result.properties = test.properties
-
-            self.stream.writeln()
-            self.stream.writeln("Running tests... ")
-            self.stream.writeln(result.separator2)
-
-            self.start_time = datetime.now()
             test(result)
-            stop_time = datetime.now()
-            self.time_taken = stop_time - self.start_time
-
-            result.printErrors()
-            self.stream.writeln(result.separator2)
-            run = result.testsRun
-            self.stream.writeln("Ran {} test{} in {}".format(run,
-                                run != 1 and "s" or "", str(self.time_taken)[:7]))
-            self.stream.writeln()
-
-            expectedFails = len(result.expectedFailures)
-            unexpectedSuccesses = len(result.unexpectedSuccesses)
-            skipped = len(result.skipped)
-
-            infos = []
-            if not result.wasSuccessful():
-                self.stream.writeln("FAILED")
-                failed, errors = map(len, (result.failures, result.errors))
-                if failed:
-                    infos.append("Failures={0}".format(failed))
-                if errors:
-                    infos.append("Errors={0}".format(errors))
-            else:
-                self.stream.writeln("OK")
-
-            if skipped:
-                infos.append("Skipped={}".format(skipped))
-            if expectedFails:
-                infos.append("expected failures={}".format(expectedFails))
-            if unexpectedSuccesses:
-                infos.append("unexpected successes={}".format(unexpectedSuccesses))
-
-            if infos:
-                self.stream.writeln(" ({})".format(", ".join(infos)))
-            else:
-                self.stream.writeln("\n")
-
-            self.stream.writeln()
-            self.stream.writeln('Generating HTML reports... ')
-            reports_path_list = result.generate_reports(self)
-
-            if reports_path_list:
-                self.stream.writeln('Reports generated: {}'.\
-                    format(', '.join(reports_path_list)))
         finally:
-            pass
+            if getattr(result, 'stopTestRun', None):
+                result.stopTestRun()
+
+        stopTime = time.time()
+        # self.timeTaken = stopTime - self.startTime
+        self.timeTaken = "%.3fs" % (stopTime - self.startTime)
+
+        result.printErrors()
+        self.stream.writeln(result.separator2)
+        run = result.testsRun
+        # self.stream.writeln("Ran {} test{} in {}".format(run,
+        #                     run != 1 and "s" or "", str(self.timeTaken)[:7]))
+        self.stream.writeln("Ran %d test%s in %s" %
+                            (run, run != 1 and "s" or "", self.timeTaken))
+        self.stream.writeln()
+
+        expectedFails = len(result.expectedFailures)
+        unexpectedSuccesses = len(result.unexpectedSuccesses)
+        skipped = len(result.skipped)
+
+        infos = []
+        if not result.wasSuccessful():
+            self.stream.writeln("FAILED")
+            failed, errors = map(len, (result.failures, result.errors))
+            if failed:
+                infos.append("Failures={0}".format(failed))
+            if errors:
+                infos.append("Errors={0}".format(errors))
+        else:
+            self.stream.writeln("OK")
+
+        if skipped:
+            infos.append("Skipped={}".format(skipped))
+        if expectedFails:
+            infos.append("expected failures={}".format(expectedFails))
+        if unexpectedSuccesses:
+            infos.append("unexpected successes={}".format(unexpectedSuccesses))
+
+        if infos:
+            self.stream.writeln(" ({})".format(", ".join(infos)))
+        else:
+            self.stream.writeln("\n")
+
+        self.stream.writeln()
+        self.stream.writeln('Generating HTML reports... ')
+        reports_path_list = result.generate_reports(self)
+
+        if reports_path_list:
+            self.stream.writeln('Reports generated: {}'.\
+                format(', '.join(reports_path_list)))
+
         return result
