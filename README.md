@@ -52,7 +52,20 @@ if __name__ == '__main__':
     unittest.main(testRunner=PyUnitReport.HTMLTestRunner(output='example_dir'))
 ```
 
-Just import `PyUnitReport` from package, then pass it to `unittest.main` with the `testRunner` keyword. This class have only one required parameter, with is `output` this is use to place the report of the TestCase, this is saved under a `reports` directory.
+In most cases, you can use `PyUnitReport` with `unittest.main`, just pass it with the `testRunner` keyword.
+
+For `HTMLTestRunner`, the only parameter you must pass in is `output`, which specifies the directory of your generated report. Also, if you want to specify the report name, you can use the `report_name` parameter, otherwise the report name will be the datetime you run test. And if you want to run testcases in `failfast` mode, you can pass in a `failfast` parameter and assign it to be True.
+
+Here is another way to run the testcases.
+
+```python
+kwargs = {
+    "output": output_folder_name,
+    "report_name": report_name,
+    "failfast": True
+}
+result = PyUnitReport.HTMLTestRunner(**kwargs).run(task_suite)
+```
 
 ### testsuite
 
@@ -70,9 +83,12 @@ example_tests = TestLoader().loadTestsFromTestCase(ExampleTests)
 example2_tests = TestLoader().loadTestsFromTestCase(Example2Test)
 
 suite = TestSuite([example_tests, example2_tests])
-
-runner = HTMLTestRunner(output='example_suite')
-
+kwargs = {
+    "output": output_folder_name,
+    "report_name": report_name,
+    "failfast": True
+}
+runner = HTMLTestRunner(**kwargs)
 runner.run(suite)
 ```
 
@@ -84,17 +100,18 @@ This is an example of what you got in the console.
 
 ```text
 $ python examples/testcase.py
+
 Running tests...
 ----------------------------------------------------------------------
- This test should be marked as error one. ... ERROR (0.000596)s
- This test should fail. ... FAIL (0.000616)s
- test_isupper (__main__.TestStringMethods) ... OK (0.000109)s
- This test should be skipped. ... SKIP (0.000064)s
- test_split (__main__.TestStringMethods) ... OK (0.000178)s
- test_upper (__main__.TestStringMethods) ... OK (0.000153)s
+ This test should be marked as error one. ... ERROR (0.000575)s
+ This test should fail. ... FAIL (0.000564)s
+ test_isupper (__main__.TestStringMethods) ... OK (0.000149)s
+ This test should be skipped. ... SKIP (0.000067)s
+ test_split (__main__.TestStringMethods) ... OK (0.000167)s
+ test_upper (__main__.TestStringMethods) ... OK (0.000134)s
 
 ======================================================================
-ERROR [0.000596s]: This test should be marked as error one.
+ERROR [0.000575s]: This test should be marked as error one.
 ----------------------------------------------------------------------
 Traceback (most recent call last):
   File "examples/testcase.py", line 23, in test_error
@@ -102,7 +119,7 @@ Traceback (most recent call last):
 ValueError
 
 ======================================================================
-FAIL [0.000616s]: This test should fail.
+FAIL [0.000564s]: This test should fail.
 ----------------------------------------------------------------------
 Traceback (most recent call last):
   File "examples/testcase.py", line 27, in test_fail
@@ -110,14 +127,14 @@ Traceback (most recent call last):
 AssertionError: 1 != 2
 
 ----------------------------------------------------------------------
-Ran 6 tests in 0:00:00
+Ran 6 tests in 0.002s
 
 FAILED
  (Failures=1, Errors=1, Skipped=1)
 
 Generating HTML reports...
 Template is not specified, load default template instead.
-Reports generated: /Users/Leo/MyProjects/ApiTestEngine/src/pyunitreport/reports/example_dir/2017-07-19-17-26-02.html
+Reports generated: /Users/Leo/MyProjects/ApiTestEngine/src/pyunitreport/reports/example_dir/2017-07-26-23-33-49.html
 ```
 
 ### Html Output
