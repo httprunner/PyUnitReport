@@ -56,14 +56,11 @@ class HTMLTestRunner(TextTestRunner):
                 result.stopTestRun()
 
         stopTime = time.time()
-        # self.timeTaken = stopTime - self.startTime
         self.timeTaken = "%.3fs" % (stopTime - self.startTime)
 
         result.printErrors()
         self.stream.writeln(result.separator2)
         run = result.testsRun
-        # self.stream.writeln("Ran {} test{} in {}".format(run,
-        #                     run != 1 and "s" or "", str(self.timeTaken)[:7]))
         self.stream.writeln("Ran %d test%s in %s" %
                             (run, run != 1 and "s" or "", self.timeTaken))
         self.stream.writeln()
