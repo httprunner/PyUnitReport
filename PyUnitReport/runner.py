@@ -39,7 +39,6 @@ class HTMLTestRunner(TextTestRunner):
         result = self._make_result()
         result.failfast = self.failfast
         result.buffer = self.buffer
-        result.tb_locals = self.tb_locals
 
         self.stream.writeln()
         self.stream.writeln("Running tests... ")
