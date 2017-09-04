@@ -89,7 +89,7 @@ class _TestInfo(object):
             self.test_result.stop_time - self.test_result.start_time
 
     def get_description(self):
-        return self.test_description
+        return self.test_description.encode("utf-8")
 
     def get_error_info(self):
         return self.test_exception_info

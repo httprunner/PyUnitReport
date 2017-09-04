@@ -14,7 +14,7 @@ with open('README.md') as f:
 
 setup(
     name='PyUnitReport',
-    version='0.1.1',
+    version='0.1.2',
     description="A unit test runner for Python, and generate HTML reports.",
     long_description=long_description,
     author="Ordanis Sanchez Suero, Leo Lee",
