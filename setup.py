@@ -1,4 +1,7 @@
-from setuptools import setup, find_packages
+import io
+
+from PyUnitReport import __version__
+from setuptools import find_packages, setup
 
 requirements = [
     # Package requirements here
@@ -9,12 +12,12 @@ test_requirements = [
     # Package test requirements here
 ]
 
-with open('README.md') as f:
+with io.open("README.md", encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
     name='PyUnitReport',
-    version='0.1.2',
+    version=__version__,
     description="A unit test runner for Python, and generate HTML reports.",
     long_description=long_description,
     author="Ordanis Sanchez Suero, Leo Lee",
