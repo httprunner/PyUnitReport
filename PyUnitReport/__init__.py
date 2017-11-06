@@ -1,2 +1,2 @@
-__version__ = '0.1.2c'
+__version__ = '0.1.3a'
 from .runner import HTMLTestRunner

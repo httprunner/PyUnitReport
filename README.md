@@ -4,10 +4,8 @@ PyUnitReport is a unittest test runner that save test results in Html files, for
 
 ## Installation
 
-To install PyUnitReport, run this command in your terminal:
-
 ```bash
-$ pip install git+https://github.com/debugtalk/PyUnitReport.git#egg=PyUnitReport
+$ pip install PyUnitReport
 ```
 
 ## Usage

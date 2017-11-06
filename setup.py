@@ -1,11 +1,15 @@
 import io
+import os
+import re
 
-from PyUnitReport import __version__
 from setuptools import find_packages, setup
+
+with open(os.path.join(os.path.dirname(__file__), 'PyUnitReport', '__init__.py')) as f:
+    version = re.compile(r"__version__\s+=\s+'(.*)'", re.I).match(f.read()).group(1)
 
 requirements = [
     # Package requirements here
-    "Jinja2"
+    "jinja2"
 ]
 
 test_requirements = [
@@ -17,7 +21,7 @@ with io.open("README.md", encoding='utf-8') as f:
 
 setup(
     name='PyUnitReport',
-    version=__version__,
+    version=version,
     description="A unit test runner for Python, and generate HTML reports.",
     long_description=long_description,
     author="Ordanis Sanchez Suero, Leo Lee",
