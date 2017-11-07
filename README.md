@@ -13,7 +13,7 @@ $ pip install PyUnitReport
 ### testcase
 
 ```python
-import PyUnitReport
+from pyunitreport import HTMLTestRunner
 import unittest
 
 class TestStringMethods(unittest.TestCase):
@@ -47,7 +47,7 @@ class TestStringMethods(unittest.TestCase):
         pass
 
 if __name__ == '__main__':
-    unittest.main(testRunner=PyUnitReport.HTMLTestRunner(output='example_dir'))
+    unittest.main(testRunner=HTMLTestRunner(output='example_dir'))
 ```
 
 In most cases, you can use `PyUnitReport` with `unittest.main`, just pass it with the `testRunner` keyword.
@@ -57,12 +57,14 @@ For `HTMLTestRunner`, the only parameter you must pass in is `output`, which spe
 Here is another way to run the testcases.
 
 ```python
+from pyunitreport import HTMLTestRunner
+
 kwargs = {
     "output": output_folder_name,
     "report_name": report_name,
     "failfast": True
 }
-result = PyUnitReport.HTMLTestRunner(**kwargs).run(task_suite)
+result = HTMLTestRunner(**kwargs).run(task_suite)
 ```
 
 ### testsuite
@@ -73,7 +75,7 @@ Here is an example:
 
 ```python
 from unittest import TestLoader, TestSuite
-from PyUnitReport import HTMLTestRunner
+from pyunitreport import HTMLTestRunner
 import ExampleTest
 import Example2Test
 

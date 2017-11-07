@@ -1,10 +1,10 @@
 """
-Tests for `PyUnitReport` module.
+Tests for `pyunitreport` module.
 """
 
 import unittest
 
-import PyUnitReport
+from pyunitreport import HTMLTestRunner
 
 
 class TestPyUnitReport(unittest.TestCase):

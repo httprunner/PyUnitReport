@@ -1,4 +1,4 @@
-import PyUnitReport
+from pyunitreport import HTMLTestRunner
 import unittest
 
 class TestStringMethods(unittest.TestCase):
@@ -32,4 +32,4 @@ class TestStringMethods(unittest.TestCase):
         pass
 
 if __name__ == '__main__':
-    unittest.main(testRunner=PyUnitReport.HTMLTestRunner(output='example_dir'))
+    unittest.main(testRunner=HTMLTestRunner(output='example_dir'))

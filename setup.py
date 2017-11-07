@@ -4,7 +4,7 @@ import re
 
 from setuptools import find_packages, setup
 
-with open(os.path.join(os.path.dirname(__file__), 'PyUnitReport', '__init__.py')) as f:
+with open(os.path.join(os.path.dirname(__file__), 'pyunitreport', '__init__.py')) as f:
     version = re.compile(r"__version__\s+=\s+'(.*)'", re.I).match(f.read()).group(1)
 
 requirements = [
@@ -29,7 +29,7 @@ setup(
     url='https://github.com/debugtalk/PyUnitReport',
     packages=find_packages(exclude=['tests']),
     package_data={
-        'PyUnitReport': ['template/*'],
+        'pyunitreport': ['template/*'],
     },
     include_package_data=True,
     install_requires=requirements,
