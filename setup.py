@@ -26,7 +26,7 @@ setup(
     long_description=long_description,
     author="Ordanis Sanchez Suero, Leo Lee",
     author_email='mail@debugtalk.com',
-    url='https://github.com/debugtalk/PyUnitReport',
+    url='https://github.com/HttpRunner/PyUnitReport',
     packages=find_packages(exclude=['tests']),
     package_data={
         'pyunitreport': ['template/*'],
