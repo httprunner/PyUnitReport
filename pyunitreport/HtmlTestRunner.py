@@ -2,7 +2,7 @@ import sys
 import time
 from unittest import TextTestRunner
 
-from .result import HtmlTestResult
+from .HtmlTestResult import HtmlTestResult
 
 UTF8 = "UTF-8"
 

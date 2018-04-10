@@ -1,5 +1,9 @@
-from pyunitreport import HTMLTestRunner
+
 import unittest
+import os,sys
+import time
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from pyunitreport.HtmlTestRunner import HTMLTestRunner
 
 class TestStringMethods(unittest.TestCase):
     """ Example test for HtmlRunner. """
@@ -32,4 +36,9 @@ class TestStringMethods(unittest.TestCase):
         pass
 
 if __name__ == '__main__':
-    unittest.main(testRunner=HTMLTestRunner(output='example_dir'))
+    import os,sys
+    import time
+    output = os.path.join(os.path.abspath(os.path.dirname(__file__)),"{}_{}".format(os.path.splitext(os.path.basename(sys.argv[0]))[0] ,time.strftime("%H%M%S", time.localtime())))
+    unittest.main(testRunner=HTMLTestRunner(verbosity=2,output=output,report_name=time.strftime("%H%M%S", time.localtime()),report_title='example_testcase',failfast=False))
+    
+    
