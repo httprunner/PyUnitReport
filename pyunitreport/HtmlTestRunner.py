@@ -2,7 +2,7 @@ import sys
 import time
 from unittest import TextTestRunner
 
-from .result import HtmlTestResult
+from .HtmlTestResult import HtmlTestResult
 
 UTF8 = "UTF-8"
 
@@ -17,6 +17,7 @@ class HTMLTestRunner(TextTestRunner):
         self.output = output
         self.report_name = report_name
         self.encoding = UTF8
+        self.testcase_name = "Testcases Name"
 
         TextTestRunner.__init__(self, stream, descriptions, verbosity,
                                 failfast=failfast, buffer=buffer)

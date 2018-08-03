@@ -139,6 +139,6 @@ Reports generated: /Users/Leo/MyProjects/ApiTestEngine/src/pyunitreport/reports/
 
 ### Html Output
 
-![html output](docs/html_output.gif)
+![html output](resources/html_output.gif)
 
-![html output](docs/html_output.png)
+![html output](resources/html_output.png)

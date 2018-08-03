@@ -332,7 +332,7 @@ class HtmlTestResult(TextTestResult):
             testRunner.template,
             title=testRunner.report_title,
             headers=report_headers,
-            testcase_name=testRunner.output,
+            testcase_name=testRunner.testcase_name,
             tests_results=test_cases_list,
             total_tests=total_test
         )

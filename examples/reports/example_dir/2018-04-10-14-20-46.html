@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Result</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2 class="text-capitalize">Test Result</h2>
+                <p class='attribute'><strong>Start Time: </strong>2018-04-10 14:20:46</p>
+                <p class='attribute'><strong>Duration: </strong>0.002s</p>
+                <p class='attribute'><strong>Status: </strong>Pass: 3, Fail: 1, Error: 1, Skip: 1</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-10">
+                <table class='table table-hover table-responsive'>
+                    <thead>
+                        <tr>
+                            <th>Testcases Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr class='success'>
+                                <td class="col-xs-9">test_isupper (__main__.TestStringMethods)</td>
+                                <td class="col-xs-3">
+                                    <span class="label label-success">
+                                        
+                                            Pass
+                                        
+                                    </span>
+                                    
+                                </td>
+                            </tr>
+                            
+                        
+                            <tr class='success'>
+                                <td class="col-xs-9">test_split (__main__.TestStringMethods)</td>
+                                <td class="col-xs-3">
+                                    <span class="label label-success">
+                                        
+                                            Pass
+                                        
+                                    </span>
+                                    
+                                </td>
+                            </tr>
+                            
+                        
+                            <tr class='success'>
+                                <td class="col-xs-9">test_upper (__main__.TestStringMethods)</td>
+                                <td class="col-xs-3">
+                                    <span class="label label-success">
+                                        
+                                            Pass
+                                        
+                                    </span>
+                                    
+                                </td>
+                            </tr>
+                            
+                        
+                            <tr class='danger'>
+                                <td class="col-xs-9">This test should fail.</td>
+                                <td class="col-xs-3">
+                                    <span class="label label-danger">
+                                        
+                                            Fail
+                                        
+                                    </span>
+                                    
+                                        &nbsp<button class="btn btn-default btn-xs">View</button>
+                                    
+                                </td>
+                            </tr>
+                            
+                                <tr style="display:none;">
+                                    <td class="col-xs-9">
+                                        <p>AssertionError</p>
+                                        <p>1 != 2</p>
+                                    </td>
+                                </tr>
+                            
+                        
+                            <tr class='warning'>
+                                <td class="col-xs-9">This test should be marked as error one.</td>
+                                <td class="col-xs-3">
+                                    <span class="label label-warning">
+                                        
+                                            Error
+                                        
+                                    </span>
+                                    
+                                        &nbsp<button class="btn btn-default btn-xs">View</button>
+                                    
+                                </td>
+                            </tr>
+                            
+                                <tr style="display:none;">
+                                    <td class="col-xs-9">
+                                        <p>ValueError</p>
+                                        <p></p>
+                                    </td>
+                                </tr>
+                            
+                        
+                            <tr class='info'>
+                                <td class="col-xs-9">This test should be skipped.</td>
+                                <td class="col-xs-3">
+                                    <span class="label label-info">
+                                        
+                                            Skip
+                                        
+                                    </span>
+                                    
+                                        &nbsp<button class="btn btn-default btn-xs">View</button>
+                                    
+                                </td>
+                            </tr>
+                            
+                                <tr style="display:none;">
+                                    <td class="col-xs-9">
+                                        <p></p>
+                                        <p>This is a skipped test.</p>
+                                    </td>
+                                </tr>
+                            
+                        
+                        <tr>
+                            <td>
+                               Total Test Runned: 6
+                            </td>
+                            <td>
+                                <span>Pass: 3, Fail: 1, Error: 1, Skip: 1</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('td').on('click', '.btn', function(e){
+                e.preventDefault();
+                var $this = $(this);
+                var $nextRow = $this.closest('tr').next('tr');
+                $nextRow.slideToggle("fast");
+                $this.text(function(i, text){
+                    if (text === 'View') {
+                        return 'Hide';
+                    } else {
+                        return 'View';
+                    };
+                });
+            });
+        });
+    </script>
+</body>
+</html>

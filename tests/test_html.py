@@ -4,8 +4,7 @@ Tests for `pyunitreport` module.
 
 import unittest
 
-from pyunitreport import HTMLTestRunner
-
+from pyunitreport import runner
 
 class TestPyUnitReport(unittest.TestCase):
 
@@ -15,5 +14,8 @@ class TestPyUnitReport(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_000_something(self):
+    def test_01_something(self):
         pass
+
+if __name__ == '__main__':
+    unittest.main()
